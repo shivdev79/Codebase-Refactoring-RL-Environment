@@ -1,0 +1,45 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+# All rights reserved.
+#
+# This source code is licensed under the BSD-style license found in the
+# LICENSE file in the root directory of this source tree.
+
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openenv-rlproj"
+version = "0.2.0"
+description = "Codebase Refactoring RL Environment for OpenEnv"
+requires-python = ">=3.10"
+dependencies = [
+    # Core OpenEnv runtime (FastAPI server + WebSocket client)
+    "openenv-core[core]>=0.2.2",
+
+    # Sandboxed test execution
+    "pytest>=8.0.0",
+    "pytest-json-report>=1.5.0",   # Structured JSON output from pytest
+
+    # Code quality metrics
+    "flake8>=7.0.0",               # Lint scoring
+
+    # Inference script dependencies
+    "openai>=1.0.0",               # OpenAI / HuggingFace-compatible client
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-json-report>=1.5.0",
+]
+
+[project.scripts]
+# Run the environment server:  uv run --project . server
+server = "rlproj.server.app:main"
+
+[tool.setuptools]
+include-package-data = true
+packages = ["rlproj", "rlproj.server"]
+package-dir = { "rlproj" = ".", "rlproj.server" = "server" }
